@@ -1,4 +1,10 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MvcMovieUI.Data;
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<MvcMovieUIContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MvcMovieUIContext")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
