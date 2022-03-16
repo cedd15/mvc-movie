@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MvcMovieUI.Data;
+using MvcMovieUI.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Services.AddDbContext<MvcMovieUIContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MvcMovieUIContext")));
@@ -10,6 +13,12 @@ builder.Services.AddDbContext<MvcMovieUIContext>(options =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    SeedData.Initialize(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
